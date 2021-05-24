@@ -1,0 +1,43 @@
+GRIPPERS = {grip1,grip2};
+BLOCK = {a,b,c,d,e,f,g};
+POS = BLOCK + {table,nil};
+BOOL = {0,1};
+ITEM = BLOCK+{nil};
+
+pos(a):POS;
+pos(b):POS;
+pos(c):POS;
+pos(d):POS;
+pos(e):POS;
+pos(f):POS;
+pos(g):POS;
+
+clear(a):BOOL;
+clear(b):BOOL;
+clear(c):BOOL;
+clear(d):BOOL;
+clear(e):BOOL;
+clear(f):BOOL;
+clear(g):BOOL;
+
+holding(grip1):ITEM;
+holding(grip2):ITEM;
+
+unstack(X:BLOCK,Y:BLOCK, G:GRIPPERS)
+pre: pos(X)=Y & clear(Y)=0 & clear(X)=1 & holding(G)=nil
+eff: pos(X)<-nil & clear(X)<-0 & holding(G)<-X & clear(Y)<-1;
+
+stack(X:BLOCK,Y:BLOCK, G:GRIPPERS)
+pre: clear(Y)=1 & clear(X)=0 & holding(G)=X
+eff: pos(X)<-Y & clear(X)<-1 & holding(G)<-nil & clear(Y)<-0;
+
+pickup(X:BLOCK, G:GRIPPERS)
+pre:pos(X)=table & clear(X)=1 & holding(G)=nil
+eff: pos(X)<-nil & clear(X)<-0 & holding(G)<-X;
+
+putdown(X:BLOCK, G:GRIPPERS)
+pre:holding(G)=X
+eff: pos(X)<-table & clear(X)<-1 & holding(G)<-nil;
+
+initial = {holding(grip1)<-nil, holding(grip2)<-nil, clear(a)<-1,clear(b)<-0,clear(c)<-0,clear(d)<-1,clear(e)<-0, clear(f)<-0, clear(g)<-1, pos(a)<-b, pos(b)<-c, pos(c)<-table, pos(d)<-e, pos(e)<-table, pos(g)<-f,pos(f)<-table};
+goals = {pos(a)<-b, pos(b)<-c, pos(c)<-d, pos(d)<-e, pos(e)<-f, pos(f)<-g, pos(g)<-table};
