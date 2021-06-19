@@ -1,5 +1,7 @@
 #include "FDRSTate.h"
 #include <string>
+#include <map>
+
 using namespace std;
 
 FDRSTate::FDRSTate( vector <Action> &a, vector <Rigid> &r, vector <Fact>s, vector <Fact> problemFacts):rigids(r),actions(a)
@@ -8,6 +10,7 @@ FDRSTate::FDRSTate( vector <Action> &a, vector <Rigid> &r, vector <Fact>s, vecto
   //  actions=a;
     vars = s;
     this->problemFacts = std::move(problemFacts);
+
 }
 
 int FDRSTate::heuristic(State *goal) {
@@ -16,17 +19,16 @@ int FDRSTate::heuristic(State *goal) {
      */
     FDRSTate *localGoal = (FDRSTate *) goal;
 
-    vector <pair<Fact, int>> hmaxTable;
+    map<string, int> hmaxTable;
     for(auto i=this->problemFacts.begin(); i<this->problemFacts.end(); i++){
-        if(find(this->vars.begin(), this->vars.end(), *i) != this->vars.end()){
-            hmaxTable.emplace_back(*i, 0);
-        }
-        else{
-            hmaxTable.emplace_back(*i, INT_MAX);
-        }
+        hmaxTable[i->toString()] =
+                find(this->vars.begin(), this->vars.end(), *i) != this->vars.end() ? 0 : INT_MAX;
     }
 
     vector <Fact> U = this->vars;
+    for(auto i=this->actions.begin(); i<this->actions.end(); i++){
+
+    }
 
     return 0;
 }
