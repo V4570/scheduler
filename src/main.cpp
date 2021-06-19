@@ -20,17 +20,17 @@
 
 using namespace std;
 
-void applyAction (vector <Rigid> &rigids, vector<Fact> initial,vector <Action> &actions)
-{
-
-    vector<GroundedAction> forks;
-    FDRSTate init (actions,rigids,initial);
-    forks = init.findForks();
-
-   // cout<<init.toString()<<endl;
-    cout<<"Found "<<forks.size()<<" forks"<<endl;
-    for (auto it = forks.begin(); it<forks.end();it++)
-        cout<<(*it).toString()<<endl;
+//void applyAction (vector <Rigid> &rigids, vector<Fact> initial,vector <Action> &actions)
+//{
+//
+//    vector<GroundedAction> forks;
+//    FDRSTate init (actions,rigids,initial);
+//    forks = init.findForks();
+//
+//   // cout<<init.toString()<<endl;
+//    cout<<"Found "<<forks.size()<<" forks"<<endl;
+//    for (auto it = forks.begin(); it<forks.end();it++)
+//        cout<<(*it).toString()<<endl;
 
   //  forks[0].getEffect(2);
 
@@ -46,7 +46,7 @@ void applyAction (vector <Rigid> &rigids, vector<Fact> initial,vector <Action> &
 
 */
 
-}
+//}
 /*
 namespace std {
   template <>
@@ -938,8 +938,8 @@ int main(int argc, char *argv[])
     long long examined =0;
     long long mem =0;
 
-    FDRSTate *init = new FDRSTate(actions,rigids,initial);
-    FDRSTate *goal =new FDRSTate(actions,rigids,goals);
+    FDRSTate *init = new FDRSTate(actions,rigids,initial, problemFacts);
+    FDRSTate *goal =new FDRSTate(actions,rigids,goals, problemFacts);
 
 
 

@@ -11,12 +11,12 @@ using namespace std;
 class FDRSTate: public State
 {
     public:
-        FDRSTate( vector <Action> &,  vector <Rigid> &,vector <Fact>);
+        FDRSTate( vector <Action> &,  vector <Rigid> &,vector <Fact>, vector <Fact>);
         vector<GroundedAction> findForks();
         vector<FDRSTate *> expand ();
         FDRSTate *getSuccessorState(GroundedAction);
 
-        int heuristic(State *goal);
+        int heuristic(State *goal) override;
 friend bool operator == (const FDRSTate, const FDRSTate);
 /*        bool operator == ( FDRSTate o)
         {
@@ -52,6 +52,7 @@ friend bool operator == (const FDRSTate, const FDRSTate);
         vector <Rigid> &rigids;
         vector <Fact> vars;
         vector <Action> &actions;
+        vector <Fact> problemFacts;
 };
 bool operator == (const FDRSTate, const FDRSTate);
 namespace std {

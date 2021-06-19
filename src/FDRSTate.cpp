@@ -2,11 +2,12 @@
 #include <string>
 using namespace std;
 
-FDRSTate::FDRSTate( vector <Action> &a, vector <Rigid> &r,vector <Fact>s):rigids(r),actions(a)
+FDRSTate::FDRSTate( vector <Action> &a, vector <Rigid> &r, vector <Fact>s, vector <Fact> problemFacts):rigids(r),actions(a)
 {
 //    rigids=r;
   //  actions=a;
     vars = s;
+    this->problemFacts = std::move(problemFacts);
 }
 
 int FDRSTate::heuristic(State *goal) {
