@@ -16,6 +16,16 @@ int FDRSTate::heuristic(State *goal) {
      */
     FDRSTate *localGoal = (FDRSTate *) goal;
 
+    vector <pair<Fact, int>> U;
+    for(auto i=this->problemFacts.begin(); i<this->problemFacts.end(); i++){
+        if(find(this->vars.begin(), this->vars.end(), *i) != this->vars.end()){
+            U.emplace_back(*i, 0);
+        }
+        else{
+            U.emplace_back(*i, INT_MAX);
+        }
+    }
+
     return 0;
 }
 
