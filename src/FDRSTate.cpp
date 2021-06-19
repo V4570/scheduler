@@ -9,6 +9,15 @@ FDRSTate::FDRSTate( vector <Action> &a, vector <Rigid> &r,vector <Fact>s):rigids
     vars = s;
 }
 
+int FDRSTate::heuristic(State *goal) {
+    /*
+     * Heuristic function implemented is hmax.
+     */
+    FDRSTate *localGoal = (FDRSTate *) goal;
+
+    return 0;
+}
+
 vector<GroundedAction> FDRSTate::findForks()
 {
     vector<vector<Parameter>> solutions;

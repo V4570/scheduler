@@ -13,10 +13,10 @@ class FDRSTate: public State
     public:
         FDRSTate( vector <Action> &,  vector <Rigid> &,vector <Fact>);
         vector<GroundedAction> findForks();
-
         vector<FDRSTate *> expand ();
-
         FDRSTate *getSuccessorState(GroundedAction);
+
+        int heuristic(State *goal);
 friend bool operator == (const FDRSTate, const FDRSTate);
 /*        bool operator == ( FDRSTate o)
         {

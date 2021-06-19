@@ -898,6 +898,30 @@ int main(int argc, char *argv[])
 */
     }
 
+    // Get all problem possible facts in order to calculate the heuristic.
+    vector <Fact> problemFacts;
+    for(auto j=variables.begin(); j<variables.end(); j++){
+        Variable *var = &(*j);
+
+        Domain variableDomain = var->getDomain();
+        for(int i=0; i<variableDomain.getSize(); i++){
+            Fact tempFact;
+            Object *val = nullptr;
+            tempFact.setVariable(var);
+            string dValDescription = variableDomain.getValue(i).getDescription();
+
+            for(auto it=objects.begin(); it<objects.end(); it++){
+                if((*it).getDescription() == dValDescription){
+                    val = &(*it);
+                    break;
+                }
+            }
+            tempFact.setValue(val);
+
+            problemFacts.push_back(tempFact);
+        }
+    }
+
     cout<<endl<<"Problem Analysis:"<<endl;
     cout<<domains.size()<<" domains with "<< objects.size()<<" discrete objects."<<endl;
     cout<<rigids.size()<<" rigid properties and "<<variables.size()<<" state variables."<<endl;
@@ -916,6 +940,8 @@ int main(int argc, char *argv[])
 
     FDRSTate *init = new FDRSTate(actions,rigids,initial);
     FDRSTate *goal =new FDRSTate(actions,rigids,goals);
+
+
 
     FDRSTate *r = BFS2(init,goal,examined,mem);
 
