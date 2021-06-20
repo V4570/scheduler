@@ -10,7 +10,11 @@ FDRSTate::FDRSTate( vector <Action> &a, vector <Rigid> &r, vector <Fact>s, vecto
   //  actions=a;
     vars = s;
     this->problemFacts = std::move(problemFacts);
-
+//    vector <Fact> U = this->vars;
+//    for(auto i=this->actions.begin(); i<this->actions.end(); i++){
+//        vector <vector<Parameter>> vv = i->isApplicable(this->rigids, this->vars);
+//        cout<< vv.size() << endl;
+//    }
 }
 
 int FDRSTate::heuristic(State *goal) {
@@ -27,7 +31,8 @@ int FDRSTate::heuristic(State *goal) {
 
     vector <Fact> U = this->vars;
     for(auto i=this->actions.begin(); i<this->actions.end(); i++){
-
+        vector <vector<Parameter>> vv = i->isApplicable(this->rigids, this->vars);
+        cout<< vv.size() << endl;
     }
 
     return 0;
@@ -54,8 +59,11 @@ vector<FDRSTate *> FDRSTate::expand()
 
     gacts = findForks();
 
-    for (int i=0;i<gacts.size();i++)
-        children.push_back(getSuccessorState(gacts[i]));
+    for (int i=0;i<gacts.size();i++){
+        FDRSTate *child = getSuccessorState(gacts[i]);
+        child->setDepth(getDepth()+1);
+        children.push_back(child);
+    }
     return children;
 }
 
