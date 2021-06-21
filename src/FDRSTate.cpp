@@ -62,17 +62,18 @@ int FDRSTate::heuristic(FDRSTate *goal) {
                 if (d_max_local < h_max_old) d_max_local = h_max_old;
             }
 
-            vector <Fact> newVars = U->getVars();
+            vector <Fact> oldVars = U->getVars();
+            vector <Fact> newVars = oldVars;
             for(auto e=0; e<f->getEffectsCount(); e++){
                 Fact effFact = f->getEffect(e);
-                if(find(newVars.begin(), newVars.end(), effFact) == newVars.end()){
-                    newVars.push_back(effFact);
+                if(find(oldVars.begin(), oldVars.end(), effFact) != oldVars.end()){
+                    continue;
                 }
-
+                newVars.push_back(effFact);
                 int newHMax = 1 + d_max_local;
                 hmaxTable[effFact.toString()] = min(hmaxTable[effFact.toString()], newHMax);
             }
-            if(newVars.size() > U->getVars().size()){
+            if(newVars.size() > oldVars.size()){
                 U->setVars(newVars);
                 uUpdated = true;
             }
