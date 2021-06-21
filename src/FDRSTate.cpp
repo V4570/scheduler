@@ -30,6 +30,7 @@ int FDRSTate::heuristic(FDRSTate *goal) {
         vector<GroundedAction> forks;
         forks = U->findForks();
         bool uUpdated = false;
+        bool hMaxUpdated = false;
 
         for (auto f=forks.begin(); f<forks.end(); f++){
             int d_max_local = 0;
@@ -66,19 +67,25 @@ int FDRSTate::heuristic(FDRSTate *goal) {
             vector <Fact> newVars = oldVars;
             for(auto e=0; e<f->getEffectsCount(); e++){
                 Fact effFact = f->getEffect(e);
-                if(find(oldVars.begin(), oldVars.end(), effFact) != oldVars.end()){
-                    continue;
+
+                if( !(find(oldVars.begin(), oldVars.end(), effFact) != oldVars.end()) ){
+                    newVars.push_back(effFact);
                 }
-                newVars.push_back(effFact);
-                int newHMax = 1 + d_max_local;
-                hmaxTable[effFact.toString()] = min(hmaxTable[effFact.toString()], newHMax);
+
+                int oldHMax = hmaxTable[effFact.toString()];
+                int newHMax = min(oldHMax, 1 + d_max_local);
+                if (newHMax != oldHMax){
+                    hMaxUpdated = true;
+                }
+                hmaxTable[effFact.toString()] = newHMax;
+
             }
             if(newVars.size() > oldVars.size()){
                 U->setVars(newVars);
                 uUpdated = true;
             }
         }
-        if(!uUpdated) break;
+        if(!uUpdated && !hMaxUpdated) break;
     }
 
     vector <Fact> goalVars = goal->getVars();
