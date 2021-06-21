@@ -290,6 +290,11 @@ vector<vector<Parameter>> Action::isApplicable(int N,vector <Rigid> &rigids, vec
     }
     return solutions;
 }
+
+Precondition* Action::getPrec(int i){
+    return precs[i];
+}
+
 vector<vector<Parameter>> Action::isApplicable(vector <Rigid> &rigids, vector <Fact> &initial)
 {
     vector <Parameter> mypar  = parameters;

@@ -35,6 +35,11 @@ Fact GroundedAction::getEffect(int i)
 
     return f;
 }
+
+Action* GroundedAction::getAction() {
+    return this->a;
+}
+
 string GroundedAction::toString()
 {
     string s;

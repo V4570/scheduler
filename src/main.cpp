@@ -906,16 +906,8 @@ int main(int argc, char *argv[])
         Domain variableDomain = var->getDomain();
         for(int i=0; i<variableDomain.getSize(); i++){
             Fact tempFact;
-            Object *val = nullptr;
             tempFact.setVariable(var);
-            string dValDescription = variableDomain.getValue(i).getDescription();
-
-            for(auto it=objects.begin(); it<objects.end(); it++){
-                if((*it).getDescription() == dValDescription){
-                    val = &(*it);
-                    break;
-                }
-            }
+            auto val = new Object(variableDomain.getValue(i).getDescription());
             tempFact.setValue(val);
 
             problemFacts.push_back(tempFact);
@@ -943,7 +935,7 @@ int main(int argc, char *argv[])
 
 
 
-    FDRSTate *r = BFS2(init,goal,examined,mem);
+    FDRSTate *r = Astar(init,goal,examined,mem);
 
     finish= clock();
     duration = (double)(finish-start)/CLOCKS_PER_SEC;

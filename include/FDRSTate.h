@@ -1,5 +1,6 @@
 #ifndef FDRSTATE_H
 #define FDRSTATE_H
+#include <utility>
 #include<vector>
 #include "Rigid.h"
 #include "Fact.h"
@@ -15,8 +16,10 @@ class FDRSTate: public State
         vector<GroundedAction> findForks();
         vector<FDRSTate *> expand ();
         FDRSTate *getSuccessorState(GroundedAction);
+        vector<Fact> getVars() {return vars;};
+        void setVars(vector<Fact> newVars) {vars=std::move(newVars);}
 
-        int heuristic(State *goal) override;
+        int heuristic(FDRSTate *goal);
 friend bool operator == (const FDRSTate, const FDRSTate);
 /*        bool operator == ( FDRSTate o)
         {

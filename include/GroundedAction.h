@@ -17,7 +17,8 @@ class GroundedAction
         }
 
         int getEffectsCount() {return a->getEffectsCount();}
-
+        Action* getAction();
+        vector <Parameter> getParam() {return mypar;};
         Fact getEffect(int i);
 
 

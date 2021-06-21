@@ -22,6 +22,8 @@ class Action
 
         int getEffectsCount () {return effects.size();}
         Effect *getEffect (int i) {return effects[i];}
+        int getPrecsCount () {return precs.size();}
+        Precondition *getPrec (int i);
         string getName(){return name;}
         string toString ();
         void addPrecondition (Precondition *p) {precs.push_back(p);}

@@ -10,32 +10,84 @@ FDRSTate::FDRSTate( vector <Action> &a, vector <Rigid> &r, vector <Fact>s, vecto
   //  actions=a;
     vars = s;
     this->problemFacts = std::move(problemFacts);
-//    vector <Fact> U = this->vars;
-//    for(auto i=this->actions.begin(); i<this->actions.end(); i++){
-//        vector <vector<Parameter>> vv = i->isApplicable(this->rigids, this->vars);
-//        cout<< vv.size() << endl;
-//    }
 }
 
-int FDRSTate::heuristic(State *goal) {
+int FDRSTate::heuristic(FDRSTate *goal) {
     /*
      * Heuristic function implemented is hmax.
      */
-    FDRSTate *localGoal = (FDRSTate *) goal;
 
     map<string, int> hmaxTable;
+    // initialize hmaxTable with 0 if fact is in current state and MAX_INT if not
     for(auto i=this->problemFacts.begin(); i<this->problemFacts.end(); i++){
         hmaxTable[i->toString()] =
                 find(this->vars.begin(), this->vars.end(), *i) != this->vars.end() ? 0 : INT_MAX;
     }
 
-    vector <Fact> U = this->vars;
-    for(auto i=this->actions.begin(); i<this->actions.end(); i++){
-        vector <vector<Parameter>> vv = i->isApplicable(this->rigids, this->vars);
-        cout<< vv.size() << endl;
+    auto *U = new FDRSTate(*this);
+
+    while (true){
+        vector<GroundedAction> forks;
+        forks = U->findForks();
+        bool uUpdated = false;
+
+        for (auto f=forks.begin(); f<forks.end(); f++){
+            int d_max_local = 0;
+            Action *a;
+            a = f->getAction();
+
+            for(auto pr=0; pr<a->getPrecsCount(); pr++){
+                Precondition *p = a->getPrec(pr);
+                Fact pf;
+                if(p->isValueObject()){
+                    auto *val = new Object(p->getValue().getDescription());
+                    pf.setValue(val);
+                }
+                else{
+                    int pp = a->getParameterPosition(p->getValueP()->getName());
+                    auto *val = new Object(f->getParam()[pp].getValue().getDescription());
+                    pf.setValue(val);
+                }
+
+                auto *var = new Variable(p->getName());
+
+                vector<Parameter *> &pv = p->getParameterVector();
+
+                for(auto & j : pv){
+                    int paramPos = a->getParameterPosition(j->getName());
+                    var->add(Object(f->getParam()[paramPos].getValue().getDescription()));
+                }
+                pf.setVariable(var);
+                int h_max_old = hmaxTable[pf.toString()];
+                if (d_max_local < h_max_old) d_max_local = h_max_old;
+            }
+
+            vector <Fact> newVars = U->getVars();
+            for(auto e=0; e<f->getEffectsCount(); e++){
+                Fact effFact = f->getEffect(e);
+                if(find(newVars.begin(), newVars.end(), effFact) == newVars.end()){
+                    newVars.push_back(effFact);
+                }
+
+                int newHMax = 1 + d_max_local;
+                hmaxTable[effFact.toString()] = min(hmaxTable[effFact.toString()], newHMax);
+            }
+            if(newVars.size() > U->getVars().size()){
+                U->setVars(newVars);
+                uUpdated = true;
+            }
+        }
+        if(!uUpdated) break;
     }
 
-    return 0;
+    vector <Fact> goalVars = goal->getVars();
+    int heuristic = 0;
+    for(Fact f : goalVars){
+        int f_hmax = hmaxTable[f.toString()];
+        if (heuristic < f_hmax) heuristic = f_hmax;
+    }
+
+    return heuristic;
 }
 
 vector<GroundedAction> FDRSTate::findForks()
