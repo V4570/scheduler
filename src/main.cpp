@@ -215,13 +215,20 @@ int main(int argc, char *argv[])
     string s;
 
     string filename;
+    auto algo = -1;
 
-    if (argc > 1)
-       filename = argv[1];
+    if (argc > 2){
+        filename = argv[1];
+        algo = atoi(argv[2]);
+    }
     else
     {
         cout<<"Filename to open: ";
         cin>>filename;
+        while(algo<0 || algo>2){
+            cout<< "Select algorithm to run (input number):\n    0 - BFS2\n    1 - BestFS    \n    2 - A*\nChoice > ";
+            cin>>algo;
+        }
     }
     ifstream f;  // Δηλώνουμε ένα ρεύμα εισόδου f
     cout<<"Opening "<<filename<<endl;
@@ -933,9 +940,22 @@ int main(int argc, char *argv[])
     FDRSTate *init = new FDRSTate(actions,rigids,initial, problemFacts);
     FDRSTate *goal =new FDRSTate(actions,rigids,goals, problemFacts);
 
+    FDRSTate *r = nullptr;
 
-
-    FDRSTate *r = Astar(init,goal,examined,mem);
+    switch(algo){
+        case 0:
+            r = BFS2(init,goal,examined,mem);
+            break;
+        case 1:
+            r = BestFS(init,goal,examined,mem);
+            break;
+        case 2:
+            r = Astar(init,goal,examined,mem);
+            break;
+        default:
+            r = nullptr;
+            break;
+    }
 
     finish= clock();
     duration = (double)(finish-start)/CLOCKS_PER_SEC;
