@@ -973,6 +973,6 @@ int main(int argc, char *argv[])
     cout<<endl<<"Plan found after examining "<<examined<<" states (memory: "<<mem<<"):"<<endl;
     r2->printPath();
 */
-
+    system("pause");
     return 0;
 }
