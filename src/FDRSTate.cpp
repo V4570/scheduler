@@ -27,16 +27,24 @@ int FDRSTate::heuristic(FDRSTate *goal) {
     auto *U = new FDRSTate(*this);
 
     while (true){
+        // main hmax loop that stops when there is no update in both the U and the hmaxTable
         vector<GroundedAction> forks;
+
+        // find applicable actions for the U state
         forks = U->findForks();
+
+        // boolean variables to check when we get an update
         bool uUpdated = false;
         bool hMaxUpdated = false;
 
         for (auto f=forks.begin(); f<forks.end(); f++){
+            // for each applicable action
             int d_max_local = 0;
             Action *a;
             a = f->getAction();
 
+            // find the hmax of the action's preconditions
+            // calculated once here since it is the same for all effects
             for(auto pr=0; pr<a->getPrecsCount(); pr++){
                 Precondition *p = a->getPrec(pr);
                 Fact pf;
@@ -59,10 +67,14 @@ int FDRSTate::heuristic(FDRSTate *goal) {
                     var->add(Object(f->getParam()[paramPos].getValue().getDescription()));
                 }
                 pf.setVariable(var);
+
                 int h_max_old = hmaxTable[pf.toString()];
                 if (d_max_local < h_max_old) d_max_local = h_max_old;
             }
 
+            // for each effect of the action store it in U if it is not already there
+            // and then calculate the new hmax and update the hmaxTable if it is smaller
+            // than what we already have
             vector <Fact> oldVars = U->getVars();
             vector <Fact> newVars = oldVars;
             for(auto e=0; e<f->getEffectsCount(); e++){
@@ -85,6 +97,8 @@ int FDRSTate::heuristic(FDRSTate *goal) {
                 uUpdated = true;
             }
         }
+
+        // end if there were no updates
         if(!uUpdated && !hMaxUpdated) break;
     }
 
