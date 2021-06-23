@@ -944,15 +944,15 @@ int main(int argc, char *argv[])
 
     switch(algo){
         case 0:
-            cout<<"Solving with BFS2...\n";
+            cout<<"\nSolving with BFS2...\n";
             r = BFS2(init,goal,examined,mem);
             break;
         case 1:
-            cout<<"Solving with BestFS (hmax)...\n";
+            cout<<"\nSolving with BestFS (hmax)...\n";
             r = BestFS(init,goal,examined,mem);
             break;
         case 2:
-            cout<<"Solving with A* (hmax)...\n";
+            cout<<"\nSolving with A* (hmax)...\n";
             r = Astar(init,goal,examined,mem);
             break;
         default:

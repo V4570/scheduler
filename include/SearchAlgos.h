@@ -22,6 +22,15 @@ X *Astar(X *initial,X *goal, long long &examined, long long &mem)
     mem=1;
     while (agenda.size()>0)
     {
+        if (examined%50 == 0){
+            cout
+            << "agenda size = " << agenda.size()
+            << " closed size = " << closed.size()
+            << " mem = " << mem << " examined = "
+            << examined
+            << endl;
+        }
+
         if (agenda.size() + closed.size() > mem)
             mem = agenda.size() + closed.size();
         examined++;
@@ -51,6 +60,15 @@ X *BestFS(X *initial,X *goal, long long &examined, long long &mem)
     mem=1;
     while (agenda.size()>0)
     {
+        if (examined%50 == 0){
+            cout
+            << "agenda size = " << agenda.size()
+            << " closed size = " << closed.size()
+            << " mem = " << mem << " examined = "
+            << examined
+            << endl;
+        }
+
         if (agenda.size() + closed.size() > mem)
             mem = agenda.size() + closed.size();
         examined++;
@@ -304,8 +322,15 @@ X *BFS2(X *initial,X *goal, long long &examined, long long &mem)
           //  }
 
             examined++;
-            if (*s==*goal)
+            if (*s==*goal){
+                cout
+                << "agenda size = " << agenda.size()
+                << " closed size = " << closed.size()
+                << " mem = " << mem << " examined = "
+                << examined
+                << endl;
                 return s;
+            }
             pair<X,bool> k (*s,true);
             closed.insert(k);
          //   closed[*s]=true;

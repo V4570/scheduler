@@ -1,6 +1,6 @@
 #include "FDRSTate.h"
 #include <string>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -17,7 +17,7 @@ int FDRSTate::heuristic(FDRSTate *goal) {
      * Heuristic function implemented is hmax.
      */
 
-    map<string, int> hmaxTable;
+    unordered_map<string, int> hmaxTable;
     // initialize hmaxTable with 0 if fact is in current state and MAX_INT if not
     for(auto i=this->problemFacts.begin(); i<this->problemFacts.end(); i++){
         hmaxTable[i->toString()] =
