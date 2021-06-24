@@ -33,19 +33,25 @@ X *Astar(X *initial,X *goal, long long &examined, long long &mem)
 
         if (agenda.size() + closed.size() > mem)
             mem = agenda.size() + closed.size();
-        examined++;
+
         X *s = agenda.top();
         agenda.pop();
-        if (*s==*goal)
-            return s;
-        closed[*s]=true;
-        vector<X *> children = s->expand();
-        for (unsigned int i=0;i<children.size();i++)
-            if (!closed[*children.at(i)])
-            {
-                children.at(i)->setHvalue(children.at(i)->getDepth()+children.at(i)->heuristic(goal));
-                agenda.push(children.at(i));
-            }
+
+        if(closed.find(*s) == closed.end()){
+            examined++;
+            if (*s==*goal)
+                return s;
+            pair<X,bool> k (*s,true);
+            closed.insert(k);
+
+            vector<X *> children = s->expand();
+            for (unsigned int i=0;i<children.size();i++)
+                if(closed.find(*children.at(i)) == closed.end())
+                {
+                    children.at(i)->setHvalue(children.at(i)->getDepth()+children.at(i)->heuristic(goal));
+                    agenda.push(children.at(i));
+                }
+        }
     }
     return nullptr;
 }
@@ -71,19 +77,22 @@ X *BestFS(X *initial,X *goal, long long &examined, long long &mem)
 
         if (agenda.size() + closed.size() > mem)
             mem = agenda.size() + closed.size();
-        examined++;
         X *s = agenda.top();
         agenda.pop();
-        if (*s==*goal)
-            return s;
-        closed[*s]=true;
-        vector<X *> children = s->expand();
-        for (unsigned int i=0;i<children.size();i++)
-            if (!closed[*children.at(i)])
-            {
-                children.at(i)->setHvalue(children.at(i)->heuristic(goal));
-                agenda.push(children.at(i));
-            }
+
+        if(closed.find(*s) == closed.end()){
+            examined++;
+            if (*s==*goal)
+                return s;
+            closed[*s]=true;
+            vector<X *> children = s->expand();
+            for (unsigned int i=0;i<children.size();i++)
+                if (!closed[*children.at(i)])
+                {
+                    children.at(i)->setHvalue(children.at(i)->heuristic(goal));
+                    agenda.push(children.at(i));
+                }
+        }
     }
     return nullptr;
 }

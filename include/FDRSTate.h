@@ -20,7 +20,7 @@ class FDRSTate: public State
         void setVars(vector<Fact> newVars) {vars=std::move(newVars);}
 
         int heuristic(FDRSTate *goal);
-friend bool operator == (const FDRSTate, const FDRSTate);
+        friend bool operator == (const FDRSTate, const FDRSTate);
 /*        bool operator == ( FDRSTate o)
         {
             for (int i=0;i<o.vars.size();i++)
