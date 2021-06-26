@@ -80,19 +80,17 @@ X *BestFS(X *initial,X *goal, long long &examined, long long &mem)
         X *s = agenda.top();
         agenda.pop();
 
-        if(closed.find(*s) == closed.end()){
-            examined++;
-            if (*s==*goal)
-                return s;
-            closed[*s]=true;
-            vector<X *> children = s->expand();
-            for (unsigned int i=0;i<children.size();i++)
-                if (!closed[*children.at(i)])
-                {
-                    children.at(i)->setHvalue(children.at(i)->heuristic(goal));
-                    agenda.push(children.at(i));
-                }
-        }
+        examined++;
+        if (*s==*goal)
+            return s;
+        closed[*s]=true;
+        vector<X *> children = s->expand();
+        for (unsigned int i=0;i<children.size();i++)
+            if (!closed[*children.at(i)])
+            {
+                children.at(i)->setHvalue(children.at(i)->heuristic(goal));
+                agenda.push(children.at(i));
+            }
     }
     return nullptr;
 }

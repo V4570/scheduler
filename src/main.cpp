@@ -969,7 +969,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    cout<<endl<<"Plan ("<<r->getPath().size()<<" steps long)" <<" found in "<<duration<<" secs, after examining "<<examined<<" states (memory: "<<mem<<"):"<<endl;
+    cout<<endl<<"Plan found in "<<duration<<" secs, after examining "<<examined<<" states (memory: "<<mem<<"):"<<endl;
     r->printPath();
 /*
     FDRSTate *r2 = DFS(init,goal,examined,mem);
