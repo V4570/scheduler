@@ -12,6 +12,3 @@ Completed
 <h2>Credits</h2>
 
 - Authors: <a href="https://github.com/V4570" target="_blank">Vasileios Tosounidis</a> and <a href="https://github.com/dogoulis" target="_blank">Pantelis Dogoulis</a>
-
-<h2>Copyright</h2>
-This project is licensed under the terms of the MIT license and protected by Udacity Honor Code and Community Code of Conduct. See <a href="LICENSE.md">license</a> and <a href="LICENSE.DISCLAIMER.md">disclaimer</a>.
